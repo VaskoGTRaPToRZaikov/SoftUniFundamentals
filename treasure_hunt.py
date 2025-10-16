@@ -1,5 +1,28 @@
-initial_loot = input().split("|")
-treasure_chest = initial_loot
+def loot(some_treasure_chest:list , some_items:list) -> list:
+    for item in some_items:
+        if item in some_treasure_chest:
+            continue
+        else:
+            some_treasure_chest.insert(0, item)
+    return some_treasure_chest
+
+def drop(some_treasure_chest:list, some_index:int) -> list:
+    removed_item = some_treasure_chest.pop(some_index)
+    some_treasure_chest.append(removed_item)
+    return some_treasure_chest
+
+def steal(some_treasure_chest:list, some_count:int) -> list:
+    if len(some_treasure_chest) <= some_count:
+        print(", ".join(some_treasure_chest))
+        some_treasure_chest = []
+    else:
+        last_new_index = len(some_treasure_chest) - some_count
+        print(", ".join(some_treasure_chest[last_new_index:]))
+        some_treasure_chest = some_treasure_chest[:last_new_index]
+
+    return some_treasure_chest
+
+treasure_chest = input().split("|")
 
 while True:
     command = input()
@@ -7,37 +30,24 @@ while True:
     if command == "Yohoho!":
         break
 
-    parts = command.split()
-    action = parts[0]
+    actions = command.split()
+    action = actions[0]
 
     if action == "Loot":
-        items = parts[1:]
-
-        for item in items:
-            if item not in treasure_chest:
-                treasure_chest.insert(0, item)
+        items = actions[1:]
+        treasure_chest = loot(treasure_chest, items)
 
     elif action == "Drop":
-        index = int(parts[1])
-
-        if 0 <= index <= len(treasure_chest):
-
-            item = treasure_chest.pop(index)
-            treasure_chest.append(item)
+        index = int(actions[1])
+        if 0 <= index < len(treasure_chest):
+            treasure_chest = drop(treasure_chest, index)
 
     elif action == "Steal":
-        count = int(parts[1])
+        count = int(actions[1])
+        treasure_chest = steal(treasure_chest, count)
 
-        stolen_count = min(count, len(treasure_chest))
-        stolen_items = treasure_chest[-stolen_count:]
-        treasure_chest = treasure_chest[:-stolen_count] \
-            if stolen_count > 0 else treasure_chest
-
-        print(", ".join(stolen_items))
-
-if len(treasure_chest) == 0:
-    print("Failed treasure hunt.")
-else:
-    total_length = sum(len(item) for item in treasure_chest)
-    average_gain = total_length / len(treasure_chest)
+if treasure_chest:
+    average_gain =sum(len(item) for item in treasure_chest) / len(treasure_chest)
     print(f"Average treasure gain: {average_gain:.2f} pirate credits.")
+else:
+    print("Failed treasure hunt.")
