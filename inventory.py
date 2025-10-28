@@ -1,43 +1,17 @@
-collecting_items = input().split(", ")
-inventory = collecting_items
+class Inventory:
 
-while True:
-    command = input()
+    def __init__(self, __capacity: int):
+        self.__capacity = __capacity
+        self.items = []
 
-    if command == "Craft!":
-        print(", ".join(inventory))
-        break
+    def add_item(self, item: str):
+        if self.__capacity > 0:
+            self.__capacity -= 1
+            return  self.items.append(item)
+        return "not enough room in the inventory"
 
-    actions = command.split(" - ")
-    action = actions[0]
-    item = actions[1]
+    def get_capacity(self):
+        return self.__capacity + len(self.items)
 
-    if action == "Collect":
-
-        if item not in inventory:
-            inventory.append(item)
-        else:
-            continue
-
-    elif action == "Drop":
-
-        if item in inventory:
-            inventory.remove(item)
-        else:
-            continue
-
-    elif action == "Combine Items":
-        items = item.split(":")
-        old_item = items[0]
-        new_item = items[1]
-
-        if old_item in inventory:
-            old_index = inventory.index(old_item)
-            inventory.insert(old_index + 1, new_item)
-        else:
-            continue
-
-    elif action == "Renew":
-        if item in inventory:
-            inventory.remove(item)
-            inventory.append(item)
+    def __repr__(self):
+        return f"Items: {', '.join(self.items)}.\nCapacity left: {self.__capacity}"
