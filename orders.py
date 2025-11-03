@@ -1,23 +1,20 @@
-numbers_of_orders = int(input())
-price = 0
-total_price = 0
+products = {}
 
-for _ in range(numbers_of_orders):
-    price_per_capsule = float(input())
-    days = int(input())
-    capsule_per_day = int(input())
+while True:
+    command = input()
 
-    if 0.01 <= price_per_capsule <= 100.00:
+    if command == "buy":
+        break
 
-        if 1 <= days <= 31:
+    product_information = command.split()
+    name, price, quantity = product_information[0], float(product_information[1]), int(product_information[2])
 
-            if 1 <= capsule_per_day <= 2000:
+    if name not in products:
+        products[name] = {"price": price, "quantity": quantity}
+    else:
+        products[name]["price"] = price
+        products[name]["quantity"] += quantity
 
-                price = price_per_capsule * capsule_per_day * days
-
-                print(f"The price for the coffee is: ${price:.2f}")
-
-    total_price += price
-
-print(f"Total: ${total_price:.2f}")
-
+for name, info in products.items():
+    total_price = info["price"] * info["quantity"]
+    print(f"{name} -> {total_price:.2f}")
