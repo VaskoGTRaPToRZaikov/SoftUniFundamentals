@@ -8,8 +8,8 @@ for _ in range(number_of_dragons):
     dragon_type, dragon_name, dragon_power, dragon_life, dragon_def = current_dragon
 
     dragon_damage = 45 if dragon_power == "null" else int(dragon_power)
-    dragon_health = 45 if dragon_life == "null" else int(dragon_life)
-    dragon_armor = 45 if dragon_def == "null" else int(dragon_def)
+    dragon_health = 250 if dragon_life == "null" else int(dragon_life)
+    dragon_armor = 10 if dragon_def == "null" else int(dragon_def)
 
     if dragon_type not in dragons_order:
         dragons_order.append(dragon_type)
@@ -31,11 +31,11 @@ for dragon_type in dragons_order:
     total_health = sum(stats["health"] for stats in type_of_dragon.values())
     total_armor = sum(stats["armor"] for stats in type_of_dragon.values())
 
-    average_damage = round(total_damage / num_dragons, 2)
-    average_health = round(total_health / num_dragons, 2)
-    average_armor = round(total_armor / num_dragons, 2)
+    average_damage = total_damage / num_dragons
+    average_health = total_health / num_dragons
+    average_armor = total_armor / num_dragons
 
-    print(f"{dragon_type}::({average_damage}/{average_health}/{average_armor})")
+    print(f"{dragon_type}::({average_damage:.2f}/{average_health:.2f}/{average_armor:.2f})")
 
     sorted_names = sorted(type_of_dragon.keys())
 
